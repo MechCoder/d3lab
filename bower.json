@@ -1,0 +1,21 @@
+{
+  "name": "d3lab",
+  "homepage": "https://github.com/MechCoder/d3lab",
+  "authors": [
+    "MechCoder <manojkumarsivaraj334@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jQuery": "^2.2.3",
+    "d3": "^3.5.16"
+  }
+}
