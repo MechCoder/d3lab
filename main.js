@@ -1,4 +1,5 @@
-var scatter_plot = function(x_coord, y_coord, x_label, y_label) {
+var scatter_plot = function(x_coord, y_coord, x_label, y_label, car_names) {
+
 
 	var pad = 20;
 	var left_pad = 100;
@@ -6,7 +7,8 @@ var scatter_plot = function(x_coord, y_coord, x_label, y_label) {
 	var h = 300;
 	var svg = d3.select('svg')
 	  .attr('width', w)
-	  .attr('height', h);
+	  .attr('height', h)
+
 	var x_max = Math.max.apply(Math, x_coord);
 	var x_min = Math.min.apply(Math, x_coord);
 	var y_max = Math.max.apply(Math, y_coord);
@@ -15,7 +17,6 @@ var scatter_plot = function(x_coord, y_coord, x_label, y_label) {
 	var xScale = d3.scale.linear().domain([0, y_max+10]).range([pad, w-pad]);
 	var yScale = d3.scale.linear().domain([x_max+10, 0]).range([0, h - pad*2]);
 
-	console.log(y_max);
 	var xAxis = d3.svg.axis().scale(xScale).orient('bottom');
 	var yAxis = d3.svg.axis().scale(yScale).orient('left');
 
@@ -38,9 +39,12 @@ var scatter_plot = function(x_coord, y_coord, x_label, y_label) {
 
 	var data = [];
 	for (var i = 0; i < x_coord.length; i++) {
-		data.push({'x': y_coord[i], 'y': x_coord[i]})
+		data.push({'x': y_coord[i], 'y': x_coord[i], 'z': car_names[i]})
 	}
 
+	var MouseOver = function (d) {
+		$('#hovered').text(d.z);
+	}
 	var circle = svg.selectAll("circle")
 	    .data(data);
 
@@ -51,7 +55,8 @@ var scatter_plot = function(x_coord, y_coord, x_label, y_label) {
 
 	circle
 	    .attr("cx", function(d) { return xMap(d.x); })
-	    .attr("cy", function(d) { return yMap(d.y); });
+	    .attr("cy", function(d) { return yMap(d.y); })
+		.on("mouseover", MouseOver);
 
 }
 
@@ -84,26 +89,28 @@ $(document).ready(function() {
 			}
 		}
 
+		var car_names = [];
 		curr_headers = d3.keys(curr_data);
 		data.forEach(function(d) {
 			for (var i = 0; i < curr_headers.length; i++) {
 				var c_h = curr_headers[i];
 				curr_data[c_h].push(d[c_h]);
 			}
+			car_names.push(d['name']);
 		});
 
 		var x_label = $('#sel-x').val();
 		var y_label = $('#sel-y').val();
     	var x_coord = curr_data[x_label];
     	var y_coord = curr_data[y_label];
-    	scatter_plot(x_coord, y_coord, x_label, y_label);
+		scatter_plot(x_coord, y_coord, x_label, y_label, car_names);
 
         $('#sel-x').click(function() {
 			var x_label = $('#sel-x').val();
 			var y_label = $('#sel-y').val();
 	    	var x_coord = curr_data[x_label];
 	    	var y_coord = curr_data[y_label];
-	    	scatter_plot(x_coord, y_coord, x_label, y_label);
+			scatter_plot(x_coord, y_coord, x_label, y_label, car_names);
         });
 
         $('#sel-y').click(function() {
@@ -111,7 +118,7 @@ $(document).ready(function() {
 			var y_label = $('#sel-y').val();
 	    	var x_coord = curr_data[x_label];
 	    	var y_coord = curr_data[y_label];
-	    	scatter_plot(x_coord, y_coord, x_label, y_label);
+			scatter_plot(x_coord, y_coord, x_label, y_label, car_names);
         });
 
         $('#update').on('click', function() {
@@ -123,16 +130,17 @@ $(document).ready(function() {
 			var y_coord = curr_data[y_label];
 			var filtered_x = [];
 			var filtered_y = [];
+			var filtered_cars = [];
 			var mpg_data = curr_data['mpg']
 			for (var i = 0; i < x_coord.length; i++) {
 				if (mpg_data[i] <= mpg_max && mpg_data[i] >= mpg_min) {
 					filtered_x.push(x_coord[i])
 					filtered_y.push(y_coord[i])
+					filtered_cars.push(car_names[i])
 				}
 			}
-			scatter_plot(filtered_x, filtered_y, x_label, y_label);
+			scatter_plot(filtered_x, filtered_y, x_label, y_label, filtered_cars);
 		});
-
 
 	})
 
