@@ -114,6 +114,26 @@ $(document).ready(function() {
 	    	scatter_plot(x_coord, y_coord, x_label, y_label);
         });
 
+        $('#update').on('click', function() {
+			var mpg_min = $('#mpg-min').val();
+			var mpg_max = $('#mpg-max').val();
+			var x_label = $('#sel-x').val();
+			var y_label = $('#sel-y').val();
+			var x_coord = curr_data[x_label];
+			var y_coord = curr_data[y_label];
+			var filtered_x = [];
+			var filtered_y = [];
+			var mpg_data = curr_data['mpg']
+			for (var i = 0; i < x_coord.length; i++) {
+				if (mpg_data[i] <= mpg_max && mpg_data[i] >= mpg_min) {
+					filtered_x.push(x_coord[i])
+					filtered_y.push(y_coord[i])
+				}
+			}
+			scatter_plot(filtered_x, filtered_y, x_label, y_label);
+		});
+
+
 	})
 
 });
