@@ -19,16 +19,35 @@ var scatter_plot = function(x_coord, y_coord, x_label, y_label, car_names) {
     var xAxis = d3.svg.axis().scale(xScale).orient('bottom');
     var yAxis = d3.svg.axis().scale(yScale).orient('left');
     svg.selectAll("g.axis").remove();
+    svg.selectAll("text.axislabel").remove();
     //svg.select("g.x.axis").remove();
 
     svg.append('g')
       .attr("class", "axis")
       .attr("transform", "translate(0, "+ (h-2*pad) +")")
-      .call(xAxis)
+      .style("text-anchor", "middle")
+      .call(xAxis);
+
     svg.append('g')
       .attr("class", "axis")
       .attr("transform", "translate("+(left_pad-3*pad)+", 0)")
-      .call(yAxis)
+      .style("text-anchor", "middle")
+      .call(yAxis);
+
+    svg.append('text')
+      .attr("class", "axislabel")
+      .attr("text-anchor", "end")
+      .attr("x", w)
+      .attr("y", 290)
+      .text(y_label);
+
+    svg.append('text')
+      .attr("class", "axislabel")
+      .attr("text-anchor", "end")
+      .attr("x", 0)
+      .attr("y", 10)
+      .attr("transform", "rotate(-90)")
+      .text(x_label);
 
     var xMap = function(d) {
         return xScale(d);
