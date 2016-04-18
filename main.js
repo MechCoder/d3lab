@@ -109,7 +109,7 @@ $(document).ready(function() {
         data.forEach(function(d) {
             for (var i = 0; i < curr_headers.length; i++) {
                 var c_h = curr_headers[i];
-                curr_data[c_h].push(d[c_h]);
+                curr_data[c_h].push(+d[c_h]);
             }
             car_names.push(d['name']);
         });
