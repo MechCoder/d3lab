@@ -1,4 +1,4 @@
-var scatter_plot = function(x_coord, y_coord, x_label, y_label, car_names) {
+var scatter_plot = function(x_coord, y_coord, x_label, y_label, car_names, x_min, x_max, y_min, y_max) {
 
     var pad = 20;
     var left_pad = 100;
@@ -7,11 +7,6 @@ var scatter_plot = function(x_coord, y_coord, x_label, y_label, car_names) {
     var svg = d3.select('svg')
       .attr('width', w)
       .attr('height', h)
-
-    var x_max = Math.max.apply(Math, x_coord);
-    var x_min = Math.min.apply(Math, x_coord);
-    var y_max = Math.max.apply(Math, y_coord);
-    var y_min = Math.min.apply(Math, y_coord);
 
     var xScale = d3.scale.linear().domain([0, y_max+10]).range([pad, w-pad]);
     var yScale = d3.scale.linear().domain([x_max+10, 0]).range([0, h - pad*2]);
@@ -123,14 +118,25 @@ $(document).ready(function() {
         var y_label = $('#sel-y').val();
         var x_coord = curr_data[x_label];
         var y_coord = curr_data[y_label];
-        scatter_plot(x_coord, y_coord, x_label, y_label, car_names);
+        var x_min = Math.min.apply(Math, x_coord);
+        var x_max = Math.max.apply(Math, x_coord);
+        var y_min = Math.min.apply(Math, y_coord);
+        var y_max = Math.max.apply(Math, y_coord);
+        scatter_plot(
+            x_coord, y_coord, x_label, y_label, car_names,
+            x_min, x_max, y_min, y_max);
 
         $('#sel-x').click(function() {
             var x_label = $('#sel-x').val();
             var y_label = $('#sel-y').val();
             var x_coord = curr_data[x_label];
             var y_coord = curr_data[y_label];
-            scatter_plot(x_coord, y_coord, x_label, y_label, car_names);
+            var x_min = Math.min.apply(Math, x_coord);
+            var x_max = Math.max.apply(Math, x_coord);
+            var y_min = Math.min.apply(Math, y_coord);
+            var y_max = Math.max.apply(Math, y_coord);
+            scatter_plot(x_coord, y_coord, x_label, y_label, car_names,
+                x_min, x_max, y_min, y_max);
         });
 
         $('#sel-y').click(function() {
@@ -138,7 +144,12 @@ $(document).ready(function() {
             var y_label = $('#sel-y').val();
             var x_coord = curr_data[x_label];
             var y_coord = curr_data[y_label];
-            scatter_plot(x_coord, y_coord, x_label, y_label, car_names);
+            var x_min = Math.min.apply(Math, x_coord);
+            var x_max = Math.max.apply(Math, x_coord);
+            var y_min = Math.min.apply(Math, y_coord);
+            var y_max = Math.max.apply(Math, y_coord);
+            scatter_plot(x_coord, y_coord, x_label, y_label, car_names,
+                x_min, x_max, y_min, y_max);
         });
 
         $('#update').on('click', function() {
@@ -152,6 +163,10 @@ $(document).ready(function() {
             var filtered_y = [];
             var filtered_cars = [];
             var mpg_data = curr_data['mpg']
+            var x_min = Math.min.apply(Math, x_coord);
+            var x_max = Math.max.apply(Math, x_coord);
+            var y_min = Math.min.apply(Math, y_coord);
+            var y_max = Math.max.apply(Math, y_coord);
             for (var i = 0; i < x_coord.length; i++) {
                 if (mpg_data[i] <= mpg_max && mpg_data[i] >= mpg_min) {
                     filtered_x.push(x_coord[i])
@@ -159,7 +174,8 @@ $(document).ready(function() {
                     filtered_cars.push(car_names[i])
                 }
             }
-            scatter_plot(filtered_x, filtered_y, x_label, y_label, filtered_cars);
+            scatter_plot(filtered_x, filtered_y, x_label, y_label, filtered_cars,
+                x_min, x_max, y_min, y_max);
         });
     })
 });
