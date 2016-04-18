@@ -1,6 +1,5 @@
 var scatter_plot = function(x_coord, y_coord, x_label, y_label, car_names) {
 
-
     var pad = 20;
     var left_pad = 100;
     var w = 500;
@@ -19,6 +18,8 @@ var scatter_plot = function(x_coord, y_coord, x_label, y_label, car_names) {
 
     var xAxis = d3.svg.axis().scale(xScale).orient('bottom');
     var yAxis = d3.svg.axis().scale(yScale).orient('left');
+    svg.selectAll("g.axis").remove();
+    //svg.select("g.x.axis").remove();
 
     svg.append('g')
       .attr("class", "axis")
